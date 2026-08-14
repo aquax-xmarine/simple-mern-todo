@@ -28,3 +28,22 @@ jobs:
 
       # - name: Push the image
       #   run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/simple-mern-todo-backend:latest
+
+
+  deploy:
+    needs: build-and-psuh
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        run: bash scripts/deploy.sh
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE: simple-mern-todo-backend
+          CONTAINER: simple-mern-todo-backend
+          PORT: 5000
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
