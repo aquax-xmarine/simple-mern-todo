@@ -1,8 +1,10 @@
+console.log ('Starting server...');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const todoRoutes = require('./routes/todoRoutes');
+
 
 const app = express();
 
