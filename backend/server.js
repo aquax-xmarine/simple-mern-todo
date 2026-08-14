@@ -4,6 +4,7 @@ console.log ('Starting server 3...');
 console.log ('Starting server 4...');
 console.log ('Starting server 5...');
 console.log ('Starting server 6...');
+console.log ('Starting server 7...');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
