@@ -13,7 +13,11 @@ ssh -o StrictHostKeyChecking=accept-new -i key.pem "$EC2_USER@$EC2_HOST" "
     docker rm $CONTAINER 2>/dev/null || true
 
     docker run -d --name $CONTAINER \
-        --restart always -p $PORT:$PORT $FULL_NAME
+        --restart always 
+        -p $PORT:$PORT \
+        -e MONGO_URI=$MONGO_URI \
+        -e PORT=$PORT \
+         $FULL_NAME
 
     "
 

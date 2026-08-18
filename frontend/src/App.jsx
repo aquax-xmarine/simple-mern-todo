@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1 style={{ color: 'red' }}>Simple MERN Todo - H</h1>
+      <h1 style={{ color: 'red' }}>Simple MERN Todo - Hello</h1>
       <TodoForm onAdd={handleAdd} />
       {error && <p className="error">{error}</p>}
       {loading ? (

@@ -41,6 +41,7 @@ jobs:
         run: bash scripts/deploy.sh
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
           IMAGE: simple-mern-todo-backend
           CONTAINER: simple-mern-todo-backend
           PORT: 5000
