@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.get('/api/whoami', (req, res) => {
   res.json({
-    instance: process.env.INSTANCE_ID;
+    instance: process.env.INSTANCE_ID,
     hostname: require('os').hostname(),
     pid: process.pid
   });
