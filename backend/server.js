@@ -12,6 +12,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/api/whoami', (req, res) => {
+  res.json({
+    instance: process.env.INSTANCE_ID;
+    hostname: require('os').hostname(),
+    pid: process.pid
+  });
+});
+
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });

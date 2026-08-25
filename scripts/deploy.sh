@@ -12,6 +12,7 @@ ssh -o StrictHostKeyChecking=accept-new -i key.pem "$EC2_USER@$EC2_HOST" "
     docker stop $CONTAINER 2>/dev/null || true
     docker rm $CONTAINER 2>/dev/null || true
 
+
     docker run -d --name $CONTAINER \
         --restart always \
         -p $PORT:$PORT \

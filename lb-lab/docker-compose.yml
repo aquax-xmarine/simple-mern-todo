@@ -1,0 +1,17 @@
+services:
+  nginx: 
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nignx.conf:/etc/nignx/nginx.conf:ro
+    depends_on: [web1, web2, web3]
+
+  web1:
+    image: nginxdemos/hello:plain-text
+
+  web2:
+    image: nginxdemos/hello:plain-text
+
+  web3:
+    image: nginxdemos/hello:plain-text

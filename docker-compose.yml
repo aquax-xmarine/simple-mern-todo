@@ -1,48 +1,37 @@
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
+  nginx:
+    image: nginx:alpine
     ports:
-      - "27017:27017"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./client/build:/usr/share/nginx/html:ro
+    depends_on: [api1, api2, api3]
+
+  api1: &api
+    build: ./server
+    environment:
+      - MONGO_URL=mongodb+srv://todo:simplemerntodo@cluster0.risj5y8.mongodb.net/simple-mern-todo?appName=Cluster0
+      - INSTANCE_ID=api1
+    depends_on: [mongo]
+
+
+  api2:
+    <<: *api
+    environment:
+      - MONGO_URL=mongodb+srv://todo:simplemerntodo@cluster0.risj5y8.mongodb.net/simple-mern-todo?appName=Cluster0
+      - INSTANCE_ID=api2
+
+  api3:
+    <<: *api
+    environment:
+      - MONGO_URL=mongodb+srv://todo:simplemerntodo@cluster0.risj5y8.mongodb.net/simple-mern-todo?appName=Cluster0
+      - INSTANCE_ID=api3
+
+  mongo:
+    image: mongo:7
     volumes:
       - mongo-data:/data/db
-    networks:
-      - mern-network
-
-
-  backend:
-    build: ./backend
-    container_name: backend
-    ports:
-      - "5000:5000"
-    env_file:
-      - ./backend/.env
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    depends_on:
-      - mongo  
-    networks:
-      - mern-network
-    command: npm run dev
-
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "5173:5173"
-
-    volumes: 
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-    networks:
-      - mern-network
-
 
 volumes:
-    mongo-data:
-
-networks:
-    mern-network:   
+  mongo-data:
