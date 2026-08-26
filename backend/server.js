@@ -1,4 +1,4 @@
-console.log("Hello");
+console.log("Hello World");
 require('dotenv').config();
 
 const express = require('express');
