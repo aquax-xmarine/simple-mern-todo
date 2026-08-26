@@ -9,6 +9,7 @@ chmod 400 key.pem
 ssh -o StrictHostKeyChecking=accept-new -i key.pem "$EC2_USER@$EC2_HOST" "
     docker pull $FULL_NAME
 
+    docker compose up -d
     docker stop $CONTAINER 2>/dev/null || true
     docker rm $CONTAINER 2>/dev/null || true
 
