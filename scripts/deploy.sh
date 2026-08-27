@@ -6,6 +6,7 @@ FULL_NAME="$DOCKERHUB_USERNAME/$IMAGE:latest"
 
 echo "$EC2_SSH_KEY" > key.pem
 chmod 400 key.pem
+trap 'rm -f key.pem' EXIT
 
 echo "Copying Docker Compose files to EC2..."
 
@@ -25,29 +26,15 @@ echo "Deploying to EC2..."
 ssh -o StrictHostKeyChecking=accept-new \
     -i key.pem \
     "$EC2_USER@$EC2_HOST" "
+
         set -e
 
         cd ~/simple-mern-todo
-
-        echo 'Checking Docker Compose...'
-
-        if ! docker compose version >/dev/null 2>&1; then
-            echo 'Docker Compose not found. Installing...'
-
-            sudo mkdir -p /usr/local/lib/docker/cli-plugins
-
-            sudo curl -SL \
-                https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
-                -o /usr/local/lib/docker/cli-plugins/docker-compose
-
-            sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-        fi
 
         echo 'Docker Compose version:'
         docker compose version
 
         echo 'Creating .env file...'
-
         cat > .env <<EOF
 DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
 IMAGE=$IMAGE
@@ -60,7 +47,8 @@ EOF
         echo 'Starting containers...'
         docker compose up -d --force-recreate
 
+        echo 'Container status:'
+        docker compose ps
+
         echo 'Deployment completed successfully!'
     "
-
-rm -f key.pem
