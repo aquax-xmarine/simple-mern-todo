@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -euo pipefail
 
 FULL_NAME="$DOCKERHUB_USERNAME/$IMAGE:latest"
@@ -26,6 +27,8 @@ ssh -o StrictHostKeyChecking=accept-new \
     "$EC2_USER@$EC2_HOST" "
         set -e
 
+        cd ~/simple-mern-todo
+
         echo 'Checking Docker Compose...'
 
         if ! docker compose version >/dev/null 2>&1; then
@@ -38,15 +41,18 @@ ssh -o StrictHostKeyChecking=accept-new \
                 -o /usr/local/lib/docker/cli-plugins/docker-compose
 
             sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-
-            echo 'Docker Compose installed:'
-            docker compose version
-        else
-            echo 'Docker Compose already installed:'
-            docker compose version
         fi
 
-        cd ~/simple-mern-todo
+        echo 'Docker Compose version:'
+        docker compose version
+
+        echo 'Creating .env file...'
+
+        cat > .env <<EOF
+DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
+IMAGE=$IMAGE
+MONGO_URI=$MONGO_URI
+EOF
 
         echo 'Pulling latest Docker image...'
         docker pull $FULL_NAME
@@ -54,8 +60,7 @@ ssh -o StrictHostKeyChecking=accept-new \
         echo 'Starting containers...'
         docker compose up -d --force-recreate
 
-        echo 'Deployment completed!'
+        echo 'Deployment completed successfully!'
     "
 
 rm -f key.pem
-
