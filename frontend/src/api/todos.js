@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://100.59.91.35:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://100.59.91.35/api';
 
 async function handleResponse(res) {
   if (!res.ok) {
