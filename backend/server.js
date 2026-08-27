@@ -2,6 +2,7 @@ console.log("Hello World");
 console.log("Hello World");
 console.log("Working?");
 console.log("Github actions you fool");
+console.log("?");
 
 require('dotenv').config();
 
